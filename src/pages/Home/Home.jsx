@@ -7,6 +7,9 @@ export const Home = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
+    if (movies.length > 0) {
+      return;
+    }
     setIsLoading(true);
 
     async function getMovies() {
@@ -22,14 +25,17 @@ export const Home = () => {
     }
 
     getMovies();
-  }, []);
+  }, [movies]);
 
   return (
     <main>
       <ul>
-        {movies.map(({ id, title }) => (
-          <li key={id}>123</li>
-        ))}
+        {!isLoading &&
+          movies.map(({ id, title }) => (
+            <li key={id}>
+              <NavLink to={`movies/${id}`}>{title}</NavLink>
+            </li>
+          ))}
       </ul>
     </main>
   );
