@@ -5,7 +5,7 @@ import { getMovieById, IMG_ORIGIN } from 'services';
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState({});
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const location = useLocation();
   const backLinkHref = location.state?.from ?? '/';
 
@@ -20,7 +20,7 @@ const MovieDetails = () => {
         if (error.message === 'canceled') {
           return;
         }
-        setError(error);
+        // setError(error);
       }
     }
 
@@ -33,16 +33,16 @@ const MovieDetails = () => {
     return;
   }
 
-  const { title, genres, overview, poster_path, vote_average, release_date } =
-    movieDetails;
+  // const { title, genres, overview, poster_path, vote_average, release_date } =
+  //   movieDetails;
 
-  console.log('poster_path:  ', poster_path);
+  console.log('poster_path:  ', movieDetails.poster_path);
 
   return (
     <main>
       <Link to={backLinkHref}>Go back</Link>
       <img
-        src={`${IMG_ORIGIN}${poster_path}`}
+        src={`${IMG_ORIGIN}${movieDetails.poster_path}`}
         alt=""
         width="200"
         height="200"

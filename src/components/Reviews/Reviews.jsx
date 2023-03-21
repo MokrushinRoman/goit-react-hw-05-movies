@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getMovieReviews } from 'services';
 
 export const Reviews = () => {
   const { movieId } = useParams();
-  const location = useLocation();
   const [reviews, setReviews] = useState([]);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -19,7 +18,7 @@ export const Reviews = () => {
         if (error.message === 'canceled') {
           return;
         }
-        setError(error);
+        // setError(error);
       }
     }
     getRevieews();

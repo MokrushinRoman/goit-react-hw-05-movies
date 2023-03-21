@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getMovieCredits } from 'services';
 
 const Cast = () => {
   const { movieId } = useParams();
-  const location = useLocation();
   const [cast, setCast] = useState([]);
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -19,7 +18,7 @@ const Cast = () => {
         if (error.message === 'canceled') {
           return;
         }
-        setError(error);
+        // setError(error);
       }
     }
     getRevieews();

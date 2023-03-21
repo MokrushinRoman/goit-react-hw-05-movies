@@ -4,7 +4,7 @@ import { getPopularMovies } from 'services';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const location = useLocation();
 
@@ -12,7 +12,7 @@ const Home = () => {
     const abortController = new AbortController();
 
     async function getMovies() {
-      setIsLoading(true);
+      // setIsLoading(true);
       try {
         const { results } = await getPopularMovies(abortController);
         setMovies([...results]);
@@ -22,7 +22,7 @@ const Home = () => {
         }
         setError(error);
       } finally {
-        setIsLoading(false);
+        // setIsLoading(false);
       }
     }
 
