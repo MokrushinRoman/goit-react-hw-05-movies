@@ -6,36 +6,40 @@ axios.defaults.params = {
   api_key: API_KEY,
 };
 
-export const getPopularMovies = async () => {
-  const { data } = await axios.get(`/trending/movie/day`);
+export const getPopularMovies = async abortController => {
+  const { data } = await axios.get(`/trending/movie/day`, {
+    signal: abortController.signal,
+  });
   return data;
 };
 
-export const getMoviesByQuery = async (query, page) => {
+export const getMoviesByQuery = async (query, abortController) => {
   const { data } = await axios.get(`/search/movie`, {
     params: {
       query: query,
-      page: page,
     },
+    signal: abortController.signal,
   });
-  console.log(data);
   return data;
 };
 
-export const getMovieById = async id => {
-  const { data } = await axios.get(`/movie/${id}`);
-  console.log(data);
+export const getMovieById = async (id, abortController) => {
+  const { data } = await axios.get(`/movie/${id}`, {
+    signal: abortController.signal,
+  });
   return data;
 };
 
-export const getMovieCredits = async id => {
-  const { data } = await axios.get(`/movie/${id}/credits`);
-  console.log(data);
+export const getMovieCredits = async (id, abortController) => {
+  const { data } = await axios.get(`/movie/${id}/credits`, {
+    signal: abortController.signal,
+  });
   return data;
 };
 
-export const getMovieReviews = async id => {
-  const { data } = await axios.get(`/movie/${id}/reviews`);
-  console.log(data);
+export const getMovieReviews = async (id, abortController) => {
+  const { data } = await axios.get(`/movie/${id}/reviews`, {
+    signal: abortController.signal,
+  });
   return data;
 };

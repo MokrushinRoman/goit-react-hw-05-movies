@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { getMovieReviews } from 'services';
+import { getMovieCredits } from 'services';
 
-export const Reviews = () => {
+const Cast = () => {
   const { movieId } = useParams();
   const location = useLocation();
-  const [reviews, setReviews] = useState([]);
+  const [cast, setCast] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -13,8 +13,8 @@ export const Reviews = () => {
 
     async function getRevieews() {
       try {
-        const { results } = await getMovieReviews(movieId, abortController);
-        setReviews([...results]);
+        const { cast } = await getMovieCredits(movieId, abortController);
+        setCast([...cast]);
       } catch (error) {
         if (error.message === 'canceled') {
           return;
@@ -29,14 +29,15 @@ export const Reviews = () => {
 
   return (
     <ul>
-      {reviews.map(({ id, content, author }) => (
+      {cast.map(({ id, name, character, profile_path }) => (
         <li key={id}>
-          <b>{`Author: ${author}`}</b>
-          <p>{content}</p>
+          <img src={profile_path} alt={name} />
+          <p>{name}</p>
+          <p>{`Character: ${character}`}</p>
         </li>
       ))}
     </ul>
   );
 };
 
-export default Reviews;
+export default Cast;

@@ -70,7 +70,7 @@ const customStyles = `
 }
 `;
 
-export const GlobalStyle = () => {
+const GlobalStyle = () => {
   return (
     <Global
       styles={css`
@@ -80,3 +80,5 @@ export const GlobalStyle = () => {
     />
   );
 };
+
+export default GlobalStyle;
