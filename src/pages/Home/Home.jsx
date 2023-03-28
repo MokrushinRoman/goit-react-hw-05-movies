@@ -1,28 +1,36 @@
 import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { getPopularMovies } from 'services';
+import { MovieList, ErrorFetch, NothingWasFound, Spinner } from 'components';
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null);
+
   const location = useLocation();
 
   useEffect(() => {
     const abortController = new AbortController();
 
     async function getMovies() {
-      // setIsLoading(true);
+      setIsLoading(true);
       try {
         const { results } = await getPopularMovies(abortController);
         setMovies([...results]);
+        if (results.length < 1) {
+          setStatus('empty');
+          return;
+        }
+        setStatus('resolved');
       } catch (error) {
         if (error.message === 'canceled') {
           return;
         }
         setError(error);
       } finally {
-        // setIsLoading(false);
+        setIsLoading(false);
       }
     }
 
@@ -33,21 +41,12 @@ const Home = () => {
 
   return (
     <main>
-      {error && (
-        <div>
-          <h2>404</h2>
-          <span>Something went wrong...</span>
-        </div>
+      {isLoading && <Spinner />}
+      {error && <ErrorFetch />}
+      {status === 'empty' && <NothingWasFound />}
+      {status === 'resolved' && (
+        <MovieList movies={movies} location={{ from: location }} />
       )}
-      <ul>
-        {movies.map(({ id, title }) => (
-          <li key={id}>
-            <NavLink to={`/movies/${id}`} state={{ from: location }}>
-              {title}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
     </main>
   );
 };

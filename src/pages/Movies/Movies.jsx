@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import SearchForm from 'components/SearchForm/SearchForm';
-import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { getMoviesByQuery } from 'services';
+import { MovieList, ErrorFetch, NothingWasFound, Spinner } from 'components';
+import { errorToast } from 'helpers';
 
 const Movies = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [status, setStatus] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -23,6 +26,11 @@ const Movies = () => {
       try {
         const { results } = await getMoviesByQuery(query, abortController);
         setMovies([...results]);
+        if (results.length < 1) {
+          setStatus('empty');
+          return;
+        }
+        setStatus('resolved');
       } catch (error) {
         if (error.message === 'canceled') {
           return;
@@ -39,6 +47,9 @@ const Movies = () => {
   }, [searchParams]);
 
   const handleSubmit = query => {
+    if (searchParams.get('movies') === query) {
+      return errorToast('You enter the same value!');
+    }
     setSearchParams({ movies: query });
     setMovies([]);
     setError(null);
@@ -47,22 +58,13 @@ const Movies = () => {
   return (
     <main>
       <SearchForm submit={handleSubmit} />
-      <ul>
-        {movies.map(({ id, title }) => (
-          <li key={id}>
-            <Link to={`/movies/${id}`} state={{ from: location }}>
-              {title}
-            </Link>
-          </li>
-        ))}
-      </ul>
-      {isLoading && <div>Loading...</div>}
-      {error && (
-        <div>
-          <h2>404</h2>
-          <span>Something went wrong... Please try again later</span>
-        </div>
+      {isLoading && <Spinner />}
+      {status === 'empty' && <NothingWasFound />}
+      {status === 'resolved' && (
+        <MovieList movies={movies} location={{ from: location }} />
       )}
+
+      {error && <ErrorFetch />}
     </main>
   );
 };

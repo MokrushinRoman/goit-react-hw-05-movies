@@ -2,7 +2,22 @@ import { Global, css } from '@emotion/react';
 import 'modern-normalize';
 
 const reset = `
+html {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
 body {
+  width: inherit;
+  height: inherit;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -11,9 +26,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+#root {
+  width: inherit;
+  height: inherit;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+main {
+  padding: 0 20px 20px;
+  width: inherit;
+  height: inherit;
 }
 
 p,

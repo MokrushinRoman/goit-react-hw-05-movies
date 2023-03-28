@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieReviews } from 'services';
+import { EmptyReviews, List } from './Reviews.styled';
+import { ErrorFetch, Spinner } from 'components';
 
 export const Reviews = () => {
   const { movieId } = useParams();
   const [reviews, setReviews] = useState([]);
-  // const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const abortController = new AbortController();
 
     async function getRevieews() {
+      setError(null);
+      setIsLoading(true);
       try {
         const { results } = await getMovieReviews(movieId, abortController);
         setReviews([...results]);
@@ -18,7 +23,9 @@ export const Reviews = () => {
         if (error.message === 'canceled') {
           return;
         }
-        // setError(error);
+        setError(error);
+      } finally {
+        setIsLoading(false);
       }
     }
     getRevieews();
@@ -27,14 +34,22 @@ export const Reviews = () => {
   }, [movieId]);
 
   return (
-    <ul>
-      {reviews.map(({ id, content, author }) => (
-        <li key={id}>
-          <b>{`Author: ${author}`}</b>
-          <p>{content}</p>
-        </li>
-      ))}
-    </ul>
+    <>
+      {error && <ErrorFetch />}
+      {isLoading && <Spinner />}
+      {reviews.length > 0 ? (
+        <List>
+          {reviews.map(({ id, content, author }) => (
+            <li key={id}>
+              <b>{`Author: ${author}`}</b>
+              <p>{content}</p>
+            </li>
+          ))}
+        </List>
+      ) : (
+        <EmptyReviews>No reviews</EmptyReviews>
+      )}
+    </>
   );
 };
 
