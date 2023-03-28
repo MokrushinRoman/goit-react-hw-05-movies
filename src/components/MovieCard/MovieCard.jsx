@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { DescriptionItem, DescriptionList, Image } from './MovieCard.styled';
 
 export const MovieCard = ({
@@ -29,4 +30,15 @@ export const MovieCard = ({
       </DescriptionList>
     </section>
   );
+};
+
+MovieCard.propTypes = {
+  movieData: PropTypes.exact({
+    movieGenres: PropTypes.string,
+    movieOverview: PropTypes.string,
+    title: PropTypes.string,
+    imageToRender: PropTypes.string,
+    movieRating: PropTypes.number,
+    releaseYear: PropTypes.number,
+  }).isRequired,
 };

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { errorToast } from 'helpers';
 import { Toaster } from 'react-hot-toast';
@@ -34,3 +35,7 @@ const SearchForm = ({ submit }) => {
 };
 
 export default SearchForm;
+
+SearchForm.propTypes = {
+  submit: PropTypes.func.isRequired,
+};

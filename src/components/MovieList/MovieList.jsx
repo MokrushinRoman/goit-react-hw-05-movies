@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { List, Link } from './MovieList.styled';
 
 export const MovieList = ({ movies, location }) => {
@@ -12,4 +13,9 @@ export const MovieList = ({ movies, location }) => {
       ))}
     </List>
   );
+};
+
+MovieList.propTypes = {
+  movies: PropTypes.arrayOf(PropTypes.object).isRequired,
+  location: PropTypes.object.isRequired,
 };
